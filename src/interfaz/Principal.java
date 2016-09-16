@@ -3,11 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package interfaz;
 
 import clases.Cuenta;
-import javax.swing.JOptionPane;
+import clases.Helper;
+import excepciones.NoCeroException;
+import excepciones.NoFondosException;
+import excepciones.NoNegativoException;
+import java.awt.Button;
+import java.util.ArrayList;
+import javax.swing.JButton;
+
 
 /**
  *
@@ -19,8 +25,23 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     Cuenta c;
+    ArrayList<JButton> botones;
+    ArrayList<Boolean> estados;
     public Principal() {
         initComponents();
+        botones.add(cmdCrearCuenta);
+        botones.add(cmdIngresar);
+        botones.add(cmdRetirar);
+        botones.add(cmdActualizarSaldo);
+        botones.add(cmdMostrar);
+        
+        estados.add(true);
+        estados.add(false);
+        estados.add(false);
+        estados.add(false);
+        estados.add(false);
+      
+        Helper.setBotones(botones, estados);
     }
 
     /**
@@ -98,26 +119,56 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCrearCuentaActionPerformed
-       c = new Cuenta(12345,1142478);
+        try {
+            c = new Cuenta(-12345, 1142478);
+        } catch (NoNegativoException ex) {
+            Helper.mensaje(this, ex.getMessage(), 2);
+        } catch (NoCeroException ex) {
+            Helper.mensaje(this, ex.getMessage(), 3);
+        }
+        
+        
     }//GEN-LAST:event_cmdCrearCuentaActionPerformed
 
     private void cmdIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdIngresarActionPerformed
-    c.ingresar(20000);
+        try {
+            c.ingresar(10000);
+        } catch (NoNegativoException ex) {
+            Helper.mensaje(this, ex.getMessage(), 3);
+        } catch (NoCeroException ex) {
+            Helper.mensaje(this, ex.getMessage(), 3);
+        }
     }//GEN-LAST:event_cmdIngresarActionPerformed
 
     private void cmdRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRetirarActionPerformed
-       c.retirar(10000);
+        try {
+            c.retirar(10000);
+        } catch (NoNegativoException ex) {
+            Helper.mensaje(this, ex.getMessage(), 3);
+
+        } catch (NoCeroException ex) {
+            Helper.mensaje(this, ex.getMessage(), 3);
+
+        } catch (NoFondosException ex) {
+            Helper.mensaje(this, ex.getMessage(), 3);
+
+        }
     }//GEN-LAST:event_cmdRetirarActionPerformed
 
     private void cmdActualizarSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdActualizarSaldoActionPerformed
-       c.actulizarSaldo(2.5);
+        try {
+            c.actulizarSaldo(2.5);
+        } catch (NoNegativoException ex) {
+            Helper.mensaje(this, ex.getMessage(), 3);
+
+        }
     }//GEN-LAST:event_cmdActualizarSaldoActionPerformed
 
     private void cmdMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMostrarActionPerformed
         String aux;
         aux = c.mostrar();
-        JOptionPane.showMessageDialog(this, aux);
-        
+        Helper.mensaje(this, aux, 1);
+
     }//GEN-LAST:event_cmdMostrarActionPerformed
 
     /**
